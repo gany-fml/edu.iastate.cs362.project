@@ -45,6 +45,7 @@ public class BankController {
 				getPhoneNumber();
 			else if(input[1].toLowerCase().equals("totalBalance"))
 				getTotalBalance();
+			else	System.out.println("invalid command");
 		}
 		
 		else if(command.equals("lock") && input[1].toLowerCase().equals("account"))
@@ -54,13 +55,21 @@ public class BankController {
 			unlockAccount();
 		
 		else System.out.println("Invalid command");
+		
 		inputScanner.close();
 		
 	}
 	
 	public void getPhoneNumber()
 	{
-		if(bank.hasPermission())
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
+		else if(!bank.hasPermission())
+			bank.getPhoneNumber(bank.getLoginUserID());
+		else
 		{
 			System.out.println("Please enter the userID");
 			Scanner input = new Scanner(System.in);
@@ -68,26 +77,26 @@ public class BankController {
 			bank.getPhoneNumber(userID);
 			input.close();
 		}
-		
-		else
-		{
-			bank.getPhoneNumber(bank.getLoginUserID());
-		}
 	}
 	
 	public void getTotalBalance()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter the accountID");
-		String accountID = input.next();
+		System.out.println("Please enter the userID");
+		String userID = input.next();
 		if(bank.hasPermission())
 		{
-			bank.getTotalBalance(accountID);
+			bank.getTotalBalance(userID);
 		}
 		else
 		{
-			if(accountID.split("-")[0].equals(bank.getLoginUserID()))
-				bank.getTotalBalance(accountID);
+			if(userID.equals(bank.getLoginUserID()))
+				bank.getTotalBalance(userID);
 			else
 				System.out.println("Request Deny");
 		}
@@ -96,6 +105,11 @@ public class BankController {
 
 	public void getbalance()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		Scanner input = new Scanner(System.in);
 		System.out.println("Please enter the accountID");
 		String accountID = input.next();
@@ -116,6 +130,11 @@ public class BankController {
 	
 	public void lockAccount()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		if(bank.hasPermission())
 		{
 			System.out.println("Please enter the accountID");
@@ -124,7 +143,6 @@ public class BankController {
 			bank.lockAccount(accountID);
 			input.close();
 		}
-		
 		else
 		{
 			System.out.println("Request Deny");
@@ -133,6 +151,11 @@ public class BankController {
 	
 	public void unlockAccount()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		if(bank.hasPermission())
 		{
 			System.out.println("Please enter the accountID");
@@ -151,28 +174,35 @@ public class BankController {
 	
 	public void createAccount()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		if(!bank.hasPermission())
 		{
 			System.out.println("Request Deny");
 			return;
 		}
-		
 		Scanner inputScanner = new Scanner(System.in);
 		System.out.println("Please enter your userID");
 		String userID = inputScanner.nextLine();
 		bank.createAccount(userID);
 		inputScanner.close();
-		
 	}
 	
 	public void createUser()
 	{
+		if(!bank.hasLogin())
+		{
+			System.out.println("Login first!");
+			return;
+		}
 		if(!bank.hasPermission())
 		{
 			System.out.println("Request Deny");
 			return;
 		}
-
 		Scanner inputScanner = new Scanner(System.in);
 		System.out.println("Please enter your name");
 		String name = inputScanner.nextLine();
@@ -215,7 +245,6 @@ public class BankController {
 			System.out.println("Has already Login, Log out first");
 			return;
 		}
-		
 		Scanner inputScanner = new Scanner(System.in);
 		System.out.println("Please enter your user name");
 		String userName = inputScanner.nextLine();

@@ -25,6 +25,11 @@ public class User implements Serializable{
 		hasPermission = hasPermission1;
 	}
 	
+	public int getNumAccount()
+	{
+		return account.size();
+	}
+	
 	public void writeUserID(String userID)
 	{
 		this.userID = userID;
@@ -52,7 +57,7 @@ public class User implements Serializable{
 	
 	public void addAccount()
 	{
-		account.add(new Account(Integer.toString(account.size())));
+		account.add(new Account(Integer.toString(account.size())+1));
 	}
 	
 	public boolean comparePassword(String password1)
@@ -72,7 +77,7 @@ public class User implements Serializable{
 	 */
 	public Account getAccount(String id)
 	{
-		return account.get(Integer.parseInt(id));
+		return account.get(Integer.parseInt(id)-1);
 	}
 	
 	public double getTotalBalance()
