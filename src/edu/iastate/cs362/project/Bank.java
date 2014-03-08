@@ -2,17 +2,21 @@ package edu.iastate.cs362.project;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class Bank {
+public class Bank implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Database bankDatabase;
 	private boolean hasPermission;
 	private boolean hasLogin;
 	private User loginUser;
 	
-	public Bank(File file1)
+	public Bank(File file1) throws IOException
 	{
 		File file = file1;
 		hasLogin = false;
@@ -23,6 +27,14 @@ public class Bank {
 			{
 				System.out.println("Bank data file not exist, creating new one...");
 				file.createNewFile();
+				FileOutputStream outStream = new FileOutputStream(file);
+				ObjectOutputStream outObject= new ObjectOutputStream(outStream);
+				Database init = new Database();
+				User root = new User("root", "123", "root", "root", true);
+				init.putUser("root", root);
+				outObject.writeObject(init);
+				outObject.close();
+				outStream.close();
 			}
 			FileInputStream iFile = new FileInputStream(file);
 			ObjectInputStream oFile = new ObjectInputStream(iFile);
@@ -31,8 +43,8 @@ public class Bank {
 			iFile.close();
 		} catch (ClassNotFoundException e) {
 			System.out.println("File type not correct, system exit");
-		} catch(IOException e){
-			System.out.println("Bank data file cannot be created");
+		} catch (IOException e) {
+			System.out.println("File can not be read");
 		}
 	}
 		
@@ -53,10 +65,15 @@ public class Bank {
 		hasPermission = false;
 	}
 	
-	public void userLogin(String userid, String password)
+	public void userLogin(String userName, String password)
 	{
-		User loginUser = bankDatabase.getUser(userid);
-		if(loginUser.comparePassword(password))
+		User loginUser = bankDatabase.getUser(userName);
+		if(loginUser == null)
+		{
+			System.out.println("User not exist");
+			return;
+		}
+		else if(loginUser.comparePassword(password))
 		{
 			System.out.println("System login successfully.");
 			System.out.println("Welcome back " + loginUser.getName() + " !");
@@ -73,23 +90,22 @@ public class Bank {
 		}
 	}
 	
-	public String getLoginUserID()
+	public String getLoginUserName()
 	{
-		return loginUser.getUserID();
+		return loginUser.getUsername();
 	}
 	
 	public void createUser(String name, String phone, String username, String password, boolean hasPermission)
 	{
 		User user2Add = new User(name, phone, username, password, hasPermission);
-		String userID = user2Add.hashCode() + "";
-		user2Add.writeUserID(userID);
-		bankDatabase.putUser(userID, user2Add);
-		System.out.println("User has been created, userID is" + userID);
+//		user2Add.writeUserID(userID);
+		bankDatabase.putUser(username, user2Add);
+		System.out.println("User has been created");
 	}
 	
-	public boolean createAccount(String userID)
+	public boolean createAccount(String userName)
 	{
-		User user2CreateAccount = bankDatabase.getUser(userID);
+		User user2CreateAccount = bankDatabase.getUser(userName);
 		if(user2CreateAccount == null)
 		{
 			System.out.println("User not exist");
@@ -98,7 +114,7 @@ public class Bank {
 		else
 		{
 			user2CreateAccount.addAccount();
-			System.out.println("Account has been created, account number is " + userID + "-" + user2CreateAccount.getNumAccount());
+			System.out.println("Account has been created, account number is " + userName + "-" + user2CreateAccount.getNumAccount());
 			return true;
 		}
 	}

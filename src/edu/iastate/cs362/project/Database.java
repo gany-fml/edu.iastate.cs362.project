@@ -13,13 +13,13 @@ public class Database implements Serializable
 		user = new HashMap<String, User>();
 	}
 	
-	public void putUser(String id1, User usr)
+	public void putUser(String userName, User usr)
 	{
-		user.put(id1, usr);
+		user.put(userName, usr);
 	}
 	
-	public User getUser(String id1)
+	public User getUser(String userName)
 	{
-		return user.get(id1);
+		return user.get(userName);
 	}
 }

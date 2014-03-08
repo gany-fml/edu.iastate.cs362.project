@@ -13,7 +13,7 @@ public class User implements Serializable{
 	private String password;
 	private String username;
 	private String name;
-	private String userID;
+//	private String userID;
 	
 	public User(String name1, String phone1, String username1, String password1, boolean hasPermission1)
 	{
@@ -30,15 +30,15 @@ public class User implements Serializable{
 		return account.size();
 	}
 	
-	public void writeUserID(String userID)
-	{
-		this.userID = userID;
-	}
-	
-	public String getUserID()
-	{
-		return userID;
-	}
+//	public void writeUserID(String userID)
+//	{
+//		this.userID = userID;
+//	}
+//	
+//	public String getUserID()
+//	{
+//		return userID;
+//	}
 	
 	public String getUsername()
 	{
