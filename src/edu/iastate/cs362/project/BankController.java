@@ -1,16 +1,21 @@
 package edu.iastate.cs362.project;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Scanner;
 
 public class BankController implements Serializable {
 
 	private Bank bank;
+	private File bankData;
 	private static final long serialVersionUID = 1L;
 
-	public BankController(File bankData) throws IOException {
+	public BankController(File bankData) {
+		this.bankData = bankData;
 		bank = new Bank(bankData);
 	}
 
@@ -39,9 +44,9 @@ public class BankController implements Serializable {
 				else if (command.equals("get")) {
 					if (input[1].toLowerCase().equals("balance"))
 						getBalance(inputScanner);
-					else if (input[1].toLowerCase().equals("phoneNumber"))
+					else if (input[1].toLowerCase().equals("phonenumber"))
 						getPhoneNumber(inputScanner);
-					else if (input[1].toLowerCase().equals("totalBalance"))
+					else if (input[1].toLowerCase().equals("totalbalance"))
 						getTotalBalance(inputScanner);
 					else
 						System.out.println("invalid command");
@@ -68,6 +73,19 @@ public class BankController implements Serializable {
 
 				else if (command.equals("exit")) {
 					exit = true;
+					try {
+						FileOutputStream outStream = new FileOutputStream(
+								bankData);
+						ObjectOutputStream outObject = new ObjectOutputStream(
+								outStream);
+						outObject.writeObject(bank.getDatabase());
+						outObject.close();
+						outStream.close();
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 
 				else
@@ -134,12 +152,17 @@ public class BankController implements Serializable {
 			return;
 		}
 		System.out.println("Please enter the accountID");
-		String accountID = inputScanner.next();
+		String accountID = inputScanner.nextLine();
+		if (!accountID.contains("-")) {
+			System.out.println("Wrong account formate");
+			return;
+		}
 		if (bank.hasPermission()) {
-			bank.getBalance(accountID);
+			System.out.println("The Balance is " + bank.getBalance(accountID));
 		} else {
 			if (accountID.split("-")[0].equals(bank.getLoginUserName()))
-				bank.getBalance(accountID);
+				System.out.println("The Balance is "
+						+ bank.getBalance(accountID));
 			else
 				System.out.println("Request Deny");
 		}
@@ -151,12 +174,14 @@ public class BankController implements Serializable {
 			return;
 		}
 		System.out.println("Please enter the username");
-		String username = inputScanner.next();
+		String username = inputScanner.nextLine();
 		if (bank.hasPermission()) {
-			bank.getTotalBalance(username);
+			System.out.println("The total balance is "
+					+ bank.getTotalBalance(username));
 		} else {
 			if (username.equals(bank.getLoginUserName()))
-				bank.getTotalBalance(username);
+				System.out.println("The total balance is "
+						+ bank.getTotalBalance(username));
 			else
 				System.out.println("Request Deny");
 		}
@@ -169,7 +194,7 @@ public class BankController implements Serializable {
 		}
 		if (bank.hasPermission()) {
 			System.out.println("Please enter the accountID");
-			String accountID = inputScanner.next();
+			String accountID = inputScanner.nextLine();
 			bank.lockAccount(accountID);
 		} else {
 			System.out.println("Request Deny");
@@ -197,11 +222,13 @@ public class BankController implements Serializable {
 			System.out.println("Login first!");
 			return;
 		} else if (!bank.hasPermission())
-			bank.getPhoneNumber(bank.getLoginUserName());
+			System.out.println("phone number is "
+					+ bank.getPhoneNumber(bank.getLoginUserName()));
 		else {
 			System.out.println("Please enter the username");
-			String username = inputScanner.next();
-			bank.getPhoneNumber(username);
+			String username = inputScanner.nextLine();
+			System.out.println("phone number is "
+					+ bank.getPhoneNumber(username));
 		}
 	}
 

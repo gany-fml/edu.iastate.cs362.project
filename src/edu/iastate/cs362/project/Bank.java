@@ -16,7 +16,7 @@ public class Bank implements Serializable {
 	private boolean hasLogin;
 	private User loginUser;
 
-	public Bank(File file1) throws IOException {
+	public Bank(File file1) {
 		File file = file1;
 		hasLogin = false;
 		loginUser = null;
@@ -67,6 +67,10 @@ public class Bank implements Serializable {
 		}
 	}
 
+	public Database getDatabase() {
+		return bankDatabase;
+	}
+
 	public void createUser(String name, String phone, String username,
 			String password, boolean hasPermission) {
 		User user2Add = new User(name, phone, username, password, hasPermission);
@@ -82,8 +86,10 @@ public class Bank implements Serializable {
 			return false;
 		} else {
 			user2CreateAccount.addAccount();
-			System.out.println("Account has been created, account number is "
-					+ userName + "-" + user2CreateAccount.getNumberOfAccounts());
+			System.out
+					.println("Account has been created, account number is "
+							+ userName + "-"
+							+ user2CreateAccount.getNumberOfAccounts());
 			return true;
 		}
 	}
@@ -125,13 +131,13 @@ public class Bank implements Serializable {
 	}
 
 	public double getBalance(String accountID) {
-		String userID = accountID.split("-")[0];
-		User user = bankDatabase.getUser(userID);
+		String userName = accountID.split("-")[0];
+		User user = bankDatabase.getUser(userName);
 		if (user == null) {
 			System.out.println("User not exist");
 			return 0;
 		}
-		Account account = user.getAccount(accountID.split("-")[1]);
+		Account account = user.getAccount((accountID.split("-")[1]));
 		if (account == null) {
 			System.out.println("Account not exist");
 			return 0;
