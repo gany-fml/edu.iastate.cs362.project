@@ -16,15 +16,15 @@ public class Main implements Serializable {
 		BankController test = new BankController(file);
 		test.translate();
 
-		String userID = JOptionPane.showInputDialog("Enter user ID");
-
-		String password = JOptionPane.showInputDialog("Enter password");
-
-		String operationNumber = JOptionPane
-				.showInputDialog("Logged in as 'staff or user' \n"
-						+ "Enter operation number \n" + " 1. Create User\n"
-						+ " 2. Create Account\n" + " 3. Manage Accounts");
-		int code = Integer.parseInt(operationNumber);
+//		String userID = JOptionPane.showInputDialog("Enter user ID");
+//
+//		String password = JOptionPane.showInputDialog("Enter password");
+//
+//		String operationNumber = JOptionPane
+//				.showInputDialog("Logged in as 'staff or user' \n"
+//						+ "Enter operation number \n" + " 1. Create User\n"
+//						+ " 2. Create Account\n" + " 3. Manage Accounts");
+//		int code = Integer.parseInt(operationNumber);
 
 	}
 

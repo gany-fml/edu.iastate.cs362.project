@@ -40,11 +40,14 @@ public class User implements Serializable {
 	 * @return the specific account
 	 */
 	public Account getAccount(String id) {
-		return accounts.get(Integer.parseInt(id) - 1);
+		int accountNumber = Integer.parseInt(id);
+		if(this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
+			return null;
+		else return accounts.get(accountNumber - 1);
 	}
 
-	public boolean comparePassword(String password1) {
-		return password.equals(password);
+	public boolean comparePassword(String password) {
+		return this.password.equals(password);
 	}
 
 	public String getName() {

@@ -158,11 +158,15 @@ public class BankController implements Serializable {
 			return;
 		}
 		if (bank.hasPermission()) {
-			System.out.println("The Balance is " + bank.getBalance(accountID));
+			Double balance = bank.getBalance(accountID);
+			if(balance != null)
+				System.out.println("The Balance is " + bank.getBalance(accountID));
 		} else {
-			if (accountID.split("-")[0].equals(bank.getLoginUserName()))
-				System.out.println("The Balance is "
-						+ bank.getBalance(accountID));
+			if (accountID.split("-")[0].equals(bank.getLoginUserName())){
+				Double balance = bank.getBalance(accountID);
+				if(balance != null)
+					System.out.println("The Balance is " + bank.getBalance(accountID));
+			}
 			else
 				System.out.println("Request Denied");
 		}
@@ -176,12 +180,17 @@ public class BankController implements Serializable {
 		System.out.println("Please enter the username");
 		String username = inputScanner.nextLine();
 		if (bank.hasPermission()) {
-			System.out.println("The total balance is "
+			Double balance = bank.getTotalBalance(username);
+			if(balance != null)
+				System.out.println("The total balance is "
 					+ bank.getTotalBalance(username));
 		} else {
-			if (username.equals(bank.getLoginUserName()))
-				System.out.println("The total balance is "
+			if (username.equals(bank.getLoginUserName())){
+				Double balance = bank.getTotalBalance(username);
+				if(balance != null)
+					System.out.println("The total balance is "
 						+ bank.getTotalBalance(username));
+			}
 			else
 				System.out.println("Request Denied");
 		}

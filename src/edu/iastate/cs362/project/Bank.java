@@ -23,8 +23,7 @@ public class Bank implements Serializable {
 		hasPermission = false;
 		try {
 			if (!file.isFile()) {
-				System.out
-						.println("Bank data file not exist, creating new one...");
+				System.out.println("Bank data file not exist, creating new one...");
 				file.createNewFile();
 				FileOutputStream outStream = new FileOutputStream(file);
 				ObjectOutputStream outObject = new ObjectOutputStream(outStream);
@@ -129,27 +128,27 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public double getBalance(String accountID) {
+	public Double getBalance(String accountID) {
 		String userName = accountID.split("-")[0];
 		User user = bankDatabase.getUser(userName);
 		if (user == null) {
 			System.out.println("User not exist");
-			return 0;
+			return null;
 		}
 		Account account = user.getAccount((accountID.split("-")[1]));
 		if (account == null) {
 			System.out.println("Account not exist");
-			return 0;
+			return null;
 		} else {
 			return account.getBalance();
 		}
 	}
 
-	public double getTotalBalance(String userID) {
+	public Double getTotalBalance(String userID) {
 		User user = bankDatabase.getUser(userID);
 		if (user == null) {
 			System.out.println("User not exist");
-			return 0;
+			return null;
 		} else
 			return user.getTotalBalance();
 	}
