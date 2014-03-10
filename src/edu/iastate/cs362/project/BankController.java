@@ -24,8 +24,7 @@ public class BankController implements Serializable {
 		Scanner inputScanner = new Scanner(System.in);
 		while (!exit) {
 			String line = "";
-			while (!inputScanner.hasNextLine())
-				;
+			while (!inputScanner.hasNextLine());
 			line = inputScanner.nextLine();
 
 			String command;
@@ -68,31 +67,38 @@ public class BankController implements Serializable {
 				}
 
 				else if (command.equals("logout")) {
+					System.out.println("User logout successfully, Goodby " + bank.getLoginUserName());
 					logout();
 				}
 
 				else if (command.equals("exit")) {
 					exit = true;
-					try {
-						FileOutputStream outStream = new FileOutputStream(
-								bankData);
-						ObjectOutputStream outObject = new ObjectOutputStream(
-								outStream);
-						outObject.writeObject(bank.getDatabase());
-						outObject.close();
-						outStream.close();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					System.out.println("System exit");
 				}
 
 				else
 					System.out.println("Invalid command");
 			}
+			updateDatabase();
 		}
 		inputScanner.close();
+	}
+	
+	public void updateDatabase()
+	{
+		try {
+			FileOutputStream outStream = new FileOutputStream(
+					bankData);
+			ObjectOutputStream outObject = new ObjectOutputStream(
+					outStream);
+			outObject.writeObject(bank.getDatabase());
+			outObject.close();
+			outStream.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void createUser(Scanner inputScanner) {
