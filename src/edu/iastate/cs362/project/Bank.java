@@ -93,6 +93,10 @@ public class Bank implements Serializable {
 	}
 
 	public boolean lockAccount(String accountID) {
+		if(accountID.contains("-")){
+			System.out.println("Wrong account format");
+			return false;
+		}
 		String userID = accountID.split("-")[0];
 		User user = bankDatabase.getUser(userID);
 		if (user == null) {

@@ -12,7 +12,7 @@ public class Main implements Serializable {
 
 	public static void main(String arg[]) throws IOException {
 
-		File file = new File("1dad");
+		File file = new File("Database.bankdata");
 		BankController test = new BankController(file);
 		test.translate();
 

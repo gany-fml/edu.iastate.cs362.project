@@ -40,10 +40,15 @@ public class User implements Serializable {
 	 * @return the specific account
 	 */
 	public Account getAccount(String id) {
-		int accountNumber = Integer.parseInt(id);
-		if(this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
+		try{
+			int accountNumber = Integer.parseInt(id);
+			if(this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
+				return null;
+			else return accounts.get(accountNumber - 1);
+		}
+		catch(java.lang.NumberFormatException e){
 			return null;
-		else return accounts.get(accountNumber - 1);
+		}
 	}
 
 	public boolean comparePassword(String password) {
