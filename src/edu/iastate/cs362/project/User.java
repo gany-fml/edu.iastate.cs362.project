@@ -14,54 +14,22 @@ public class User implements Serializable {
 	private String username;
 	private String name;
 
-	// private String userID;
-
-	public User(String name1, String phone1, String username1,
-			String password1, boolean hasPermission1) {
-		username = username1;
-		phone = phone1;
-		password = password1;
-		name = name1;
+	public User(String name, String phone, String username, String password,
+			boolean hasPermission) {
+		this.name = name;
+		this.phone = phone;
+		this.username = username;
+		this.password = password;
+		this.hasPermission = hasPermission;
 		accounts = new ArrayList<Account>();
-		hasPermission = hasPermission1;
 	}
 
 	public int getNumberOfAccounts() {
 		return accounts.size();
 	}
 
-	// public void writeUserID(String userID)
-	// {
-	// this.userID = userID;
-	// }
-	//
-	// public String getUserID()
-	// {
-	// return userID;
-	// }
-
-	public String getUsername() {
-		return username;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public boolean getPermission() {
-		return hasPermission;
-	}
-
 	public void addAccount() {
 		accounts.add(new Account(Integer.toString(accounts.size()) + 1));
-	}
-
-	public boolean comparePassword(String password1) {
-		return password.equals(password);
-	}
-
-	public String getPhoneNumber() {
-		return phone;
 	}
 
 	/**
@@ -73,6 +41,26 @@ public class User implements Serializable {
 	 */
 	public Account getAccount(String id) {
 		return accounts.get(Integer.parseInt(id) - 1);
+	}
+
+	public boolean comparePassword(String password1) {
+		return password.equals(password);
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public boolean getPermission() {
+		return hasPermission;
+	}
+
+	public String getPhoneNumber() {
+		return phone;
 	}
 
 	public double getTotalBalance() {

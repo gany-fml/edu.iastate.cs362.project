@@ -101,12 +101,12 @@ public class BankController implements Serializable {
 			return;
 		}
 		if (!bank.hasPermission()) {
-			System.out.println("Request Deny");
+			System.out.println("Request Denied");
 			return;
 		}
 		System.out.println("Please enter your name");
 		String name = inputScanner.nextLine();
-		System.out.println("Please enter your phone Number");
+		System.out.println("Please enter your Phone Number");
 		String phoneNumber = inputScanner.nextLine();
 		System.out.println("Please enter your username");
 		String username = inputScanner.nextLine();
@@ -138,7 +138,7 @@ public class BankController implements Serializable {
 			return;
 		}
 		if (!bank.hasPermission()) {
-			System.out.println("Request Deny");
+			System.out.println("Request Denied");
 			return;
 		}
 		System.out.println("Please enter your username");
@@ -154,7 +154,7 @@ public class BankController implements Serializable {
 		System.out.println("Please enter the accountID");
 		String accountID = inputScanner.nextLine();
 		if (!accountID.contains("-")) {
-			System.out.println("Wrong account formate");
+			System.out.println("Wrong account format");
 			return;
 		}
 		if (bank.hasPermission()) {
@@ -164,7 +164,7 @@ public class BankController implements Serializable {
 				System.out.println("The Balance is "
 						+ bank.getBalance(accountID));
 			else
-				System.out.println("Request Deny");
+				System.out.println("Request Denied");
 		}
 	}
 
@@ -183,7 +183,7 @@ public class BankController implements Serializable {
 				System.out.println("The total balance is "
 						+ bank.getTotalBalance(username));
 			else
-				System.out.println("Request Deny");
+				System.out.println("Request Denied");
 		}
 	}
 
@@ -197,7 +197,7 @@ public class BankController implements Serializable {
 			String accountID = inputScanner.nextLine();
 			bank.lockAccount(accountID);
 		} else {
-			System.out.println("Request Deny");
+			System.out.println("Request Denied");
 		}
 	}
 
@@ -213,7 +213,7 @@ public class BankController implements Serializable {
 		}
 
 		else {
-			System.out.println("Request Deny");
+			System.out.println("Request Denied");
 		}
 	}
 
@@ -222,12 +222,12 @@ public class BankController implements Serializable {
 			System.out.println("Login first!");
 			return;
 		} else if (!bank.hasPermission())
-			System.out.println("phone number is "
+			System.out.println("Phone number is "
 					+ bank.getPhoneNumber(bank.getLoginUserName()));
 		else {
 			System.out.println("Please enter the username");
 			String username = inputScanner.nextLine();
-			System.out.println("phone number is "
+			System.out.println("Phone number is "
 					+ bank.getPhoneNumber(username));
 		}
 	}

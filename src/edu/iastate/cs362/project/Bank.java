@@ -74,7 +74,6 @@ public class Bank implements Serializable {
 	public void createUser(String name, String phone, String username,
 			String password, boolean hasPermission) {
 		User user2Add = new User(name, phone, username, password, hasPermission);
-		// user2Add.writeUserID(userID);
 		bankDatabase.putUser(username, user2Add);
 		System.out.println("User has been created");
 	}
