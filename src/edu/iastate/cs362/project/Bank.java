@@ -46,23 +46,23 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public void userLogin(String userName, String password) {
+	public boolean userLogin(String userName, String password) {
 		User loginUser = bankDatabase.getUser(userName);
 		if (loginUser == null) {
 			System.out.println("User not exist");
-			return;
+			return false;
 		} else if (loginUser.comparePassword(password)) {
 			System.out.println("System login successfully.");
 			System.out.println("Welcome back " + loginUser.getName() + " !");
 			hasLogin = true;
 			hasPermission = loginUser.getPermission();
 			this.loginUser = loginUser;
-			return;
+			return true;
 		}
 
 		else {
 			System.out.println("Username or password not correct");
-			return;
+			return false;
 		}
 	}
 
@@ -131,6 +131,20 @@ public class Bank implements Serializable {
 			return true;
 		}
 	}
+	
+	public boolean changePassword(String username2ChangePassword, String password)
+	{
+		User user = bankDatabase.getUser(username2ChangePassword);
+		if(user == null){
+			System.out.println("User not exist");
+			return false;
+		}
+		else{
+			user.changePassword(password);
+			return true;
+		}
+
+	}
 
 	public Double getBalance(String accountID) {
 		String userName = accountID.split("-")[0];
@@ -166,8 +180,8 @@ public class Bank implements Serializable {
 			return user.getPhoneNumber();
 	}
 
-	public String getLoginUserName() {
-		return loginUser.getUsername();
+	public User getLoginUser() {
+		return this.loginUser;
 	}
 
 	public boolean hasPermission() {

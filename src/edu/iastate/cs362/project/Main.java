@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-import javax.swing.JOptionPane;
-
 public class Main implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -15,7 +13,6 @@ public class Main implements Serializable {
 		File file = new File("Database.bankdata");
 		BankController test = new BankController(file);
 		test.translate();
-
 //		String userID = JOptionPane.showInputDialog("Enter user ID");
 //
 //		String password = JOptionPane.showInputDialog("Enter password");

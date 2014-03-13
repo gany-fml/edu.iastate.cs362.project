@@ -50,6 +50,10 @@ public class BankController implements Serializable {
 					else
 						System.out.println("invalid command");
 				}
+				
+				else if (command.equals("change")
+						&& input[1].toLowerCase().equals("password"))
+					changePassword(inputScanner);
 
 				else if (command.equals("lock")
 						&& input[1].toLowerCase().equals("account"))
@@ -67,7 +71,7 @@ public class BankController implements Serializable {
 				}
 
 				else if (command.equals("logout")) {
-					System.out.println("User logout successfully, Goodby " + bank.getLoginUserName());
+					System.out.println("User logout successfully, Goodby " + bank.getLoginUser().getUsername());
 					logout();
 				}
 
@@ -168,7 +172,7 @@ public class BankController implements Serializable {
 			if(balance != null)
 				System.out.println("The Balance is " + bank.getBalance(accountID));
 		} else {
-			if (accountID.split("-")[0].equals(bank.getLoginUserName())){
+			if (accountID.split("-")[0].equals(bank.getLoginUser().getUsername())){
 				Double balance = bank.getBalance(accountID);
 				if(balance != null)
 					System.out.println("The Balance is " + bank.getBalance(accountID));
@@ -191,7 +195,7 @@ public class BankController implements Serializable {
 				System.out.println("The total balance is "
 					+ bank.getTotalBalance(username));
 		} else {
-			if (username.equals(bank.getLoginUserName())){
+			if (username.equals(bank.getLoginUser().getUsername())){
 				Double balance = bank.getTotalBalance(username);
 				if(balance != null)
 					System.out.println("The total balance is "
@@ -238,7 +242,7 @@ public class BankController implements Serializable {
 			return;
 		} else if (!bank.hasPermission())
 			System.out.println("Phone number is "
-					+ bank.getPhoneNumber(bank.getLoginUserName()));
+					+ bank.getPhoneNumber(bank.getLoginUser().getUsername()));
 		else {
 			System.out.println("Please enter the username");
 			String username = inputScanner.nextLine();
@@ -246,7 +250,40 @@ public class BankController implements Serializable {
 					+ bank.getPhoneNumber(username));
 		}
 	}
-
+	
+	public void changePassword(Scanner inputScanner)
+	{
+		if (!bank.hasLogin()) {
+			System.out.println("Login first!");
+			return;
+		} else if (!bank.hasPermission()){
+			System.out.println("Please enter your old password:");
+			String oldPassword = inputScanner.nextLine();
+			if(!bank.getLoginUser().comparePassword(oldPassword))
+				System.out.println("Password not correct");
+			else{
+				System.out.println("Enter your new password");
+				String newpass1 = inputScanner.nextLine();
+				System.out.println("Enter your new password again");
+				String newpass2 = inputScanner.nextLine();
+				if(newpass1.equals(newpass2)){
+					bank.changePassword(bank.getLoginUser().getUsername(), newpass1);
+					System.out.println("Password change successfully");
+				}
+				else System.out.println("Two passwords are not match");
+			}
+		}
+		else {
+			System.out.println("Please enter the username");
+			String user2ChangePassword = inputScanner.nextLine();
+			System.out.println("please enter the new password");
+			String newPass = inputScanner.nextLine();
+			if(bank.changePassword(user2ChangePassword, newPass))
+				System.out.println("Password change successfully");
+			else System.out.println("Password change failed");
+		}
+	}
+	
 	public void login(Scanner inputScanner) {
 		if (bank.hasLogin()) {
 			System.out.println("User currently logged in, Log out first");

@@ -50,6 +50,10 @@ public class User implements Serializable {
 			return null;
 		}
 	}
+	
+	public void changePassword(String newPassword){
+		this.password = newPassword;
+	}
 
 	public boolean comparePassword(String password) {
 		return this.password.equals(password);
