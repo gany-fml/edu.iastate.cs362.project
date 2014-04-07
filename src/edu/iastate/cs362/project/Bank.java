@@ -23,8 +23,7 @@ public class Bank implements Serializable {
 		hasPermission = false;
 		try {
 			if (!file.isFile()) {
-				System.out
-						.println("Bank data file not exist, creating new one...");
+				System.out.println("Bank data file not exist, creating new one...");
 				file.createNewFile();
 				FileOutputStream outStream = new FileOutputStream(file);
 				ObjectOutputStream outObject = new ObjectOutputStream(outStream);
@@ -64,8 +63,8 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean createUser(String name, String phone, String username,
-			String password, boolean hasPermission) {
+	public boolean createUser(String name, String phone, String username, String password,
+			boolean hasPermission) {
 		User u = new User(name, phone, username, password, hasPermission);
 		System.out.println("User has been created");
 		return bankDatabase.putUser(username, u);
@@ -173,6 +172,69 @@ public class Bank implements Serializable {
 			return this.bankDatabase.putUser(username, u);
 		} else {
 			return false;
+		}
+	}
+
+	public boolean depositMoney(String accountID, double depositAmount) {
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			System.out.println("User not exist");
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			System.out.println("Account not exist");
+			return false;
+		} else {
+			if (account.deposit(depositAmount)) {
+				return this.bankDatabase.putUser(accountID.split("-")[0], u);
+			} else {
+				return false;
+			}
+
+		}
+	}
+
+	public boolean withdrawMoney(String accountID, double withdrawAmount) {
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			System.out.println("User not exist");
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			System.out.println("Account not exist");
+			return false;
+		} else {
+			if (account.withdraw(withdrawAmount)) {
+				return this.bankDatabase.putUser(accountID.split("-")[0], u);
+			} else {
+				return false;
+			}
+
+		}
+	}
+
+	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
+		User u = bankDatabase.getUser(accountFrom.split("-")[0]);
+		if (u == null) {
+			System.out.println("User not exist");
+			return false;
+		}
+		Account accountF = u.getAccount(accountFrom.split("-")[1]);
+		Account accountT = u.getAccount(accountTo.split("-")[1]);
+		if (accountF == null || accountT == null) {
+			System.out.println("Account not exist");
+			return false;
+		} else {
+			if (accountF.getBalance() >= transferAmount && transferAmount > 0) {
+				accountF.withdraw(transferAmount);
+				accountT.deposit(transferAmount);
+				return this.bankDatabase.putUser(accountFrom.split("-")[0], u);
+			} else {
+				return false;
+			}
+
 		}
 	}
 

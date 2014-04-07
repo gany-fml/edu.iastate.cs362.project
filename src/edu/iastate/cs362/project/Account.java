@@ -35,11 +35,20 @@ public class Account implements Serializable {
 		return lockStatus;
 	}
 
-	public void deposit(double amount) {
+	public boolean deposit(double amount) {
+		if (amount <= 0)
+			return false;
 		balance += amount;
+		return true;
 	}
 
-	public void withdraw(double amount) {
-		balance -= amount;
+	public boolean withdraw(double amount) {
+		if (amount <= 0)
+			return false;
+		if (balance >= amount) {
+			balance -= amount;
+			return true;
+		} else
+			return false;
 	}
 }

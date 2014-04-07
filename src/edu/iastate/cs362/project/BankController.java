@@ -53,16 +53,13 @@ public class BankController implements Serializable {
 						System.out.println("invalid command");
 				}
 
-				else if (command.equals("change")
-						&& input[1].toLowerCase().equals("password"))
+				else if (command.equals("change") && input[1].toLowerCase().equals("password"))
 					changePassword(inputScanner);
 
-				else if (command.equals("lock")
-						&& input[1].toLowerCase().equals("account"))
+				else if (command.equals("lock") && input[1].toLowerCase().equals("account"))
 					lockAccount(inputScanner);
 
-				else if (command.equals("unlock")
-						&& input[1].toLowerCase().equals("account"))
+				else if (command.equals("unlock") && input[1].toLowerCase().equals("account"))
 					unlockAccount(inputScanner);
 				else
 					System.out.println("invalid command");
@@ -170,15 +167,12 @@ public class BankController implements Serializable {
 		if (bank.hasPermission()) {
 			Double balance = bank.getBalance(accountID);
 			if (balance != null)
-				System.out.println("The Balance is "
-						+ bank.getBalance(accountID));
+				System.out.println("The Balance is " + bank.getBalance(accountID));
 		} else {
-			if (accountID.split("-")[0].equals(bank.getLoginUser()
-					.getUsername())) {
+			if (accountID.split("-")[0].equals(bank.getLoginUser().getUsername())) {
 				Double balance = bank.getBalance(accountID);
 				if (balance != null)
-					System.out.println("The Balance is "
-							+ bank.getBalance(accountID));
+					System.out.println("The Balance is " + bank.getBalance(accountID));
 			} else
 				System.out.println("Request Denied");
 		}
@@ -194,14 +188,12 @@ public class BankController implements Serializable {
 		if (bank.hasPermission()) {
 			Double balance = bank.getTotalBalance(username);
 			if (balance != null)
-				System.out.println("The total balance is "
-						+ bank.getTotalBalance(username));
+				System.out.println("The total balance is " + bank.getTotalBalance(username));
 		} else {
 			if (username.equals(bank.getLoginUser().getUsername())) {
 				Double balance = bank.getTotalBalance(username);
 				if (balance != null)
-					System.out.println("The total balance is "
-							+ bank.getTotalBalance(username));
+					System.out.println("The total balance is " + bank.getTotalBalance(username));
 			} else
 				System.out.println("Request Denied");
 		}
@@ -247,8 +239,7 @@ public class BankController implements Serializable {
 		else {
 			System.out.println("Please enter the username");
 			String username = inputScanner.nextLine();
-			System.out.println("Phone number is "
-					+ bank.getPhoneNumber(username));
+			System.out.println("Phone number is " + bank.getPhoneNumber(username));
 		}
 	}
 
@@ -267,8 +258,7 @@ public class BankController implements Serializable {
 				System.out.println("Enter your new password again");
 				String newpass2 = inputScanner.nextLine();
 				if (newpass1.equals(newpass2)) {
-					bank.changePassword(bank.getLoginUser().getUsername(),
-							newpass1);
+					bank.changePassword(bank.getLoginUser().getUsername(), newpass1);
 					System.out.println("Password change successfully");
 				} else
 					System.out.println("Two passwords are not match");
@@ -302,19 +292,20 @@ public class BankController implements Serializable {
 	}
 
 	// Iteration 1
-	public boolean userLogin(String username, String password){
+	public boolean userLogin(String username, String password) {
 		return bank.userLogin(username, password);
 	}
-	public boolean userLogout(){
+
+	public boolean userLogout() {
 		return bank.logout();
 	}
-	
+
 	public User getLoginUser() {
 		return bank.getLoginUser();
 	}
-	
-	public boolean createUser(String name, String phone, String username,
-			String password, boolean hasPermission) {
+
+	public boolean createUser(String name, String phone, String username, String password,
+			boolean hasPermission) {
 		return bank.createUser(name, phone, username, password, hasPermission);
 	}
 
@@ -343,29 +334,26 @@ public class BankController implements Serializable {
 	}
 
 	// Iteration 2 - We may still need to revise the Iteration Diagrams
-	public boolean changePassword(String username, String currentPassword,
-			String newPassword) {
+	public boolean changePassword(String username, String currentPassword, String newPassword) {
 		return bank.changePassword(username, newPassword);
 	}
 
 	public boolean updatePhoneNumber(String username, String newPhoneNumber) {
 		return bank.updatePhoneNumber(username, newPhoneNumber);
 	}
-	
-	public boolean depositMoney(String accountID, double depositAmount){
-		return false;
-	}
-	
-	public boolean withdrawMoney(String accountID, double withdrawAmount){
-		return false;
-	}
-	
-	public boolean transferMoney(String accountID1,String accountID2, double transferAmount){
-		return false;
+
+	public boolean depositMoney(String accountID, double depositAmount) {
+		return bank.depositMoney(accountID, depositAmount);
 	}
 
-	//public Statement viewStatement(String username){}
-	
-	
+	public boolean withdrawMoney(String accountID, double withdrawAmount) {
+		return bank.withdrawMoney(accountID, withdrawAmount);
+	}
+
+	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
+		return bank.transferMoney(accountFrom, accountTo, transferAmount);
+	}
+
+	// public Statement viewStatement(String username){}
 
 }

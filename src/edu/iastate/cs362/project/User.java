@@ -14,8 +14,7 @@ public class User implements Serializable {
 	private String username;
 	private String name;
 
-	public User(String name, String phone, String username, String password,
-			boolean hasPermission) {
+	public User(String name, String phone, String username, String password, boolean hasPermission) {
 		this.name = name;
 		this.phone = phone;
 		this.username = username;
@@ -42,8 +41,7 @@ public class User implements Serializable {
 	public Account getAccount(String id) {
 		try {
 			int accountNumber = Integer.parseInt(id);
-			if (this.getNumberOfAccounts() < accountNumber
-					|| accountNumber <= 0)
+			if (this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
 				return null;
 			else
 				return accounts.get(accountNumber - 1);
