@@ -178,12 +178,10 @@ public class Bank implements Serializable {
 	public boolean depositMoney(String accountID, double depositAmount) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
-			System.out.println("User not exist");
 			return false;
 		}
 		Account account = u.getAccount(accountID.split("-")[1]);
 		if (account == null) {
-			System.out.println("Account not exist");
 			return false;
 		} else {
 			if (account.deposit(depositAmount)) {
@@ -198,12 +196,10 @@ public class Bank implements Serializable {
 	public boolean withdrawMoney(String accountID, double withdrawAmount) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
-			System.out.println("User not exist");
 			return false;
 		}
 		Account account = u.getAccount(accountID.split("-")[1]);
 		if (account == null) {
-			System.out.println("Account not exist");
 			return false;
 		} else {
 			if (account.withdraw(withdrawAmount)) {
@@ -218,13 +214,11 @@ public class Bank implements Serializable {
 	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
 		User u = bankDatabase.getUser(accountFrom.split("-")[0]);
 		if (u == null) {
-			System.out.println("User not exist");
 			return false;
 		}
 		Account accountF = u.getAccount(accountFrom.split("-")[1]);
 		Account accountT = u.getAccount(accountTo.split("-")[1]);
 		if (accountF == null || accountT == null) {
-			System.out.println("Account not exist");
 			return false;
 		} else {
 			if (accountF.getBalance() >= transferAmount && transferAmount > 0) {
@@ -236,6 +230,14 @@ public class Bank implements Serializable {
 			}
 
 		}
+	}
+	
+	public Statement viewStatement(String username){
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
+			return null;
+		}
+		return null;
 	}
 
 	public Database getDatabase() {

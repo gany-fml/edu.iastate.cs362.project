@@ -1,6 +1,5 @@
 package edu.iastate.cs362.project;
 
-import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -354,6 +353,8 @@ public class BankController implements Serializable {
 		return bank.transferMoney(accountFrom, accountTo, transferAmount);
 	}
 
-	// public Statement viewStatement(String username){}
+	public Statement viewStatement(String username){
+		return bank.viewStatement(username);
+	}
 
 }
