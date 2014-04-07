@@ -23,7 +23,8 @@ public class Bank implements Serializable {
 		hasPermission = false;
 		try {
 			if (!file.isFile()) {
-				System.out.println("Bank data file not exist, creating new one...");
+				System.out
+						.println("Bank data file not exist, creating new one...");
 				file.createNewFile();
 				FileOutputStream outStream = new FileOutputStream(file);
 				ObjectOutputStream outObject = new ObjectOutputStream(outStream);
@@ -70,11 +71,11 @@ public class Bank implements Serializable {
 		return bankDatabase;
 	}
 
-	public void createUser(String name, String phone, String username,
+	public boolean createUser(String name, String phone, String username,
 			String password, boolean hasPermission) {
 		User user2Add = new User(name, phone, username, password, hasPermission);
-		bankDatabase.putUser(username, user2Add);
 		System.out.println("User has been created");
+		return bankDatabase.putUser(username, user2Add);
 	}
 
 	public boolean createAccount(String userName) {
@@ -93,7 +94,7 @@ public class Bank implements Serializable {
 	}
 
 	public boolean lockAccount(String accountID) {
-		if(accountID.contains("-")){
+		if (accountID.contains("-")) {
 			System.out.println("Wrong account format");
 			return false;
 		}
@@ -131,15 +132,14 @@ public class Bank implements Serializable {
 			return true;
 		}
 	}
-	
-	public boolean changePassword(String username2ChangePassword, String password)
-	{
+
+	public boolean changePassword(String username2ChangePassword,
+			String password) {
 		User user = bankDatabase.getUser(username2ChangePassword);
-		if(user == null){
+		if (user == null) {
 			System.out.println("User not exist");
 			return false;
-		}
-		else{
+		} else {
 			user.changePassword(password);
 			return true;
 		}
@@ -162,8 +162,8 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public Double getTotalBalance(String userID) {
-		User user = bankDatabase.getUser(userID);
+	public Double getTotalBalance(String userName) {
+		User user = bankDatabase.getUser(userName);
 		if (user == null) {
 			System.out.println("User not exist");
 			return null;
@@ -171,8 +171,8 @@ public class Bank implements Serializable {
 			return user.getTotalBalance();
 	}
 
-	public String getPhoneNumber(String userID) {
-		User user = bankDatabase.getUser(userID);
+	public String getPhoneNumber(String userName) {
+		User user = bankDatabase.getUser(userName);
 		if (user == null) {
 			System.out.println("User not exist");
 			return null;
@@ -192,9 +192,10 @@ public class Bank implements Serializable {
 		return hasLogin;
 	}
 
-	public void logout() {
+	public boolean logout() {
 		hasLogin = false;
 		loginUser = null;
 		hasPermission = false;
+		return true;
 	}
 }

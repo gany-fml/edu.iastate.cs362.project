@@ -116,7 +116,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCreateMouseClicked
 
     private void buttonLoginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonLoginMouseClicked
-        boolean status = Main.controller.login(username.getText(), new String(password.getPassword()));
+        boolean status = Main.controller.userLogin(username.getText(), new String(password.getPassword()));
         if(status)
         {
         	FrontPage.startApp();

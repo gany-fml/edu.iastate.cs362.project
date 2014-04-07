@@ -11,8 +11,9 @@ public class Database implements Serializable {
 		user = new HashMap<String, User>();
 	}
 
-	public void putUser(String userName, User usr) {
-		user.put(userName, usr);
+	public boolean putUser(String userName, User usr) {
+			user.put(userName, usr);
+			return true;
 	}
 
 	public User getUser(String userName) {
