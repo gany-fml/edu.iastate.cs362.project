@@ -349,7 +349,7 @@ public class BankController implements Serializable {
 	}
 
 	public boolean updatePhoneNumber(String username, String newPhoneNumber) {
-		return false;
+		return bank.updatePhoneNumber(username, newPhoneNumber);
 	}
 	
 	public boolean depositMoney(String accountID, double depositAmount){

@@ -132,8 +132,9 @@ public class Bank implements Serializable {
 			System.out.println("Account not exist");
 			return false;
 		} else {
+			account.lockAccount();
 			System.out.println("Account " + accountID + " has been locked");
-			return account.lockAccount();
+			return this.bankDatabase.putUser(accountID.split("-")[0], u);
 		}
 	}
 
@@ -148,19 +149,31 @@ public class Bank implements Serializable {
 			System.out.println("Account not exist");
 			return false;
 		} else {
+			account.unlockAccount();
 			System.out.println("Account " + accountID + " has been unlocked");
-			return account.unlockAccount();
+			return this.bankDatabase.putUser(accountID.split("-")[0], u);
 		}
 	}
 
 	public boolean changePassword(String username, String newPassword) {
 		User u = bankDatabase.getUser(username);
 		if (u != null) {
-			return u.changePassword(newPassword);
+			u.changePassword(newPassword);
+			return this.bankDatabase.putUser(username, u);
 		} else {
 			return false;
 		}
 
+	}
+
+	public boolean updatePhoneNumber(String username, String newPhoneNumber) {
+		User u = bankDatabase.getUser(username);
+		if (u != null) {
+			u.updatePhoneNumber(newPhoneNumber);
+			return this.bankDatabase.putUser(username, u);
+		} else {
+			return false;
+		}
 	}
 
 	public Database getDatabase() {

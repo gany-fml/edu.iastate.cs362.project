@@ -40,20 +40,20 @@ public class User implements Serializable {
 	 * @return the specific account
 	 */
 	public Account getAccount(String id) {
-		try{
+		try {
 			int accountNumber = Integer.parseInt(id);
-			if(this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
+			if (this.getNumberOfAccounts() < accountNumber
+					|| accountNumber <= 0)
 				return null;
-			else return accounts.get(accountNumber - 1);
-		}
-		catch(java.lang.NumberFormatException e){
+			else
+				return accounts.get(accountNumber - 1);
+		} catch (java.lang.NumberFormatException e) {
 			return null;
 		}
 	}
-	
-	public boolean changePassword(String newPassword){
+
+	public void changePassword(String newPassword) {
 		this.password = newPassword;
-		return true;
 	}
 
 	public boolean comparePassword(String password) {
@@ -81,5 +81,9 @@ public class User implements Serializable {
 		for (Account a : accounts)
 			ret += a.getBalance();
 		return ret;
+	}
+
+	public void updatePhoneNumber(String newPhoneNumber) {
+		this.phone = newPhoneNumber;
 	}
 }
