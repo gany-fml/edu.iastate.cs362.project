@@ -9,40 +9,40 @@ public class Account implements Serializable {
 	private String accountID;
 	private boolean lockStatus;
 
-	public Account(String id) {
+	protected Account(String id) {
 		balance = 0;
 		accountID = id;
 		lockStatus = false;
 	}
 
-	public String getAccountID() {
+	protected String getAccountID() {
 		return accountID;
 	}
 
-	public double getBalance() {
+	protected double getBalance() {
 		return balance;
 	}
 
-	public void lockAccount() {
+	protected void lockAccount() {
 		lockStatus = true;
 	}
 
-	public void unlockAccount() {
+	protected void unlockAccount() {
 		lockStatus = false;
 	}
 
-	public boolean checkLockStatus() {
+	protected boolean checkLockStatus() {
 		return lockStatus;
 	}
 
-	public boolean deposit(double amount) {
+	protected boolean deposit(double amount) {
 		if (amount <= 0)
 			return false;
 		balance += amount;
 		return true;
 	}
 
-	public boolean withdraw(double amount) {
+	protected boolean withdraw(double amount) {
 		if (amount <= 0)
 			return false;
 		if (balance >= amount) {

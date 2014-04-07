@@ -16,7 +16,7 @@ public class Bank implements Serializable {
 	private boolean hasLogin;
 	private User loginUser;
 
-	public Bank(File file1) {
+	protected Bank(File file1) {
 		File file = file1;
 		hasLogin = false;
 		loginUser = null;
@@ -46,7 +46,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean userLogin(String username, String password) {
+	protected boolean userLogin(String username, String password) {
 		User loginUser = bankDatabase.getUser(username);
 		if (loginUser == null) {
 			System.out.println("User not exist");
@@ -63,14 +63,14 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean createUser(String name, String phone, String username, String password,
+	protected boolean createUser(String name, String phone, String username, String password,
 			boolean hasPermission) {
 		User u = new User(name, phone, username, password, hasPermission);
 		System.out.println("User has been created");
 		return bankDatabase.putUser(username, u);
 	}
 
-	public boolean createAccount(String username) {
+	protected boolean createAccount(String username) {
 		User u = bankDatabase.getUser(username);
 		if (u != null) {
 			u.addAccount();
@@ -82,7 +82,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public Double getBalance(String accountID) {
+	protected Double getBalance(String accountID) {
 		String username = accountID.split("-")[0];
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
@@ -98,7 +98,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public Double getTotalBalance(String username) {
+	protected Double getTotalBalance(String username) {
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			System.out.println("User not exist");
@@ -107,7 +107,7 @@ public class Bank implements Serializable {
 			return u.getTotalBalance();
 	}
 
-	public String getPhoneNumber(String username) {
+	protected String getPhoneNumber(String username) {
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			System.out.println("User not exist");
@@ -116,7 +116,7 @@ public class Bank implements Serializable {
 			return u.getPhoneNumber();
 	}
 
-	public boolean lockAccount(String accountID) {
+	protected boolean lockAccount(String accountID) {
 		if (accountID.contains("-")) {
 			System.out.println("Wrong account format");
 			return false;
@@ -137,7 +137,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean unlockAccount(String accountID) {
+	protected boolean unlockAccount(String accountID) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
 			System.out.println("User not exist");
@@ -154,7 +154,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean changePassword(String username, String newPassword) {
+	protected boolean changePassword(String username, String newPassword) {
 		User u = bankDatabase.getUser(username);
 		if (u != null) {
 			u.changePassword(newPassword);
@@ -165,7 +165,7 @@ public class Bank implements Serializable {
 
 	}
 
-	public boolean updatePhoneNumber(String username, String newPhoneNumber) {
+	protected boolean updatePhoneNumber(String username, String newPhoneNumber) {
 		User u = bankDatabase.getUser(username);
 		if (u != null) {
 			u.updatePhoneNumber(newPhoneNumber);
@@ -175,7 +175,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean depositMoney(String accountID, double depositAmount) {
+	protected boolean depositMoney(String accountID, double depositAmount) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -193,7 +193,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean withdrawMoney(String accountID, double withdrawAmount) {
+	protected boolean withdrawMoney(String accountID, double withdrawAmount) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -211,7 +211,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
+	protected boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
 		User u = bankDatabase.getUser(accountFrom.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -232,31 +232,32 @@ public class Bank implements Serializable {
 		}
 	}
 	
-	public Statement viewStatement(String username){
+	protected Statement viewStatement(String username){
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			return null;
 		}
-		return null;
+		Statement s = new Statement(u);
+		return s.generateStatement();
 	}
 
-	public Database getDatabase() {
+	protected Database getDatabase() {
 		return bankDatabase;
 	}
 
-	public User getLoginUser() {
+	protected User getLoginUser() {
 		return this.loginUser;
 	}
 
-	public boolean hasPermission() {
+	protected boolean hasPermission() {
 		return hasPermission;
 	}
 
-	public boolean hasLogin() {
+	protected boolean hasLogin() {
 		return hasLogin;
 	}
 
-	public boolean logout() {
+	protected boolean logout() {
 		hasLogin = false;
 		loginUser = null;
 		hasPermission = false;

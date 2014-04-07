@@ -14,7 +14,7 @@ public class User implements Serializable {
 	private String username;
 	private String name;
 
-	public User(String name, String phone, String username, String password, boolean hasPermission) {
+	protected User(String name, String phone, String username, String password, boolean hasPermission) {
 		this.name = name;
 		this.phone = phone;
 		this.username = username;
@@ -23,11 +23,11 @@ public class User implements Serializable {
 		accounts = new ArrayList<Account>();
 	}
 
-	public int getNumberOfAccounts() {
-		return accounts.size();
+	protected List<Account>  getAccounts() {
+		return accounts;
 	}
 
-	public boolean addAccount() {
+	protected boolean addAccount() {
 		return accounts.add(new Account(Integer.toString(accounts.size()) + 1));
 	}
 
@@ -38,10 +38,10 @@ public class User implements Serializable {
 	 *            : only the second part of account id
 	 * @return the specific account
 	 */
-	public Account getAccount(String id) {
+	protected Account getAccount(String id) {
 		try {
 			int accountNumber = Integer.parseInt(id);
-			if (this.getNumberOfAccounts() < accountNumber || accountNumber <= 0)
+			if (accounts.size() < accountNumber || accountNumber <= 0)
 				return null;
 			else
 				return accounts.get(accountNumber - 1);
@@ -50,38 +50,38 @@ public class User implements Serializable {
 		}
 	}
 
-	public void changePassword(String newPassword) {
+	protected void changePassword(String newPassword) {
 		this.password = newPassword;
 	}
 
-	public boolean comparePassword(String password) {
+	protected boolean comparePassword(String password) {
 		return this.password.equals(password);
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 
-	public String getUsername() {
+	protected String getUsername() {
 		return username;
 	}
 
-	public boolean getPermission() {
+	protected boolean getPermission() {
 		return hasPermission;
 	}
 
-	public String getPhoneNumber() {
+	protected String getPhoneNumber() {
 		return phone;
 	}
 
-	public double getTotalBalance() {
+	protected double getTotalBalance() {
 		double ret = 0;
 		for (Account a : accounts)
 			ret += a.getBalance();
 		return ret;
 	}
 
-	public void updatePhoneNumber(String newPhoneNumber) {
+	protected void updatePhoneNumber(String newPhoneNumber) {
 		this.phone = newPhoneNumber;
 	}
 }
