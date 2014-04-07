@@ -47,113 +47,50 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean userLogin(String userName, String password) {
-		User loginUser = bankDatabase.getUser(userName);
+	public boolean userLogin(String username, String password) {
+		User loginUser = bankDatabase.getUser(username);
 		if (loginUser == null) {
 			System.out.println("User not exist");
 			return false;
 		} else if (loginUser.comparePassword(password)) {
-			System.out.println("System login successfully.");
 			System.out.println("Welcome back " + loginUser.getName() + " !");
+			this.loginUser = loginUser;
 			hasLogin = true;
 			hasPermission = loginUser.getPermission();
-			this.loginUser = loginUser;
 			return true;
-		}
-
-		else {
-			System.out.println("Username or password not correct");
+		} else {
+			System.out.println("username or password not correct");
 			return false;
 		}
-	}
-
-	public Database getDatabase() {
-		return bankDatabase;
 	}
 
 	public boolean createUser(String name, String phone, String username,
 			String password, boolean hasPermission) {
-		User user2Add = new User(name, phone, username, password, hasPermission);
+		User u = new User(name, phone, username, password, hasPermission);
 		System.out.println("User has been created");
-		return bankDatabase.putUser(username, user2Add);
+		return bankDatabase.putUser(username, u);
 	}
 
-	public boolean createAccount(String userName) {
-		User user2CreateAccount = bankDatabase.getUser(userName);
-		if (user2CreateAccount == null) {
-			System.out.println("User not exist");
-			return false;
+	public boolean createAccount(String username) {
+		User u = bankDatabase.getUser(username);
+		if (u != null) {
+			u.addAccount();
+			System.out.println("Account has been created");
+			return this.bankDatabase.putUser(username, u);
 		} else {
-			user2CreateAccount.addAccount();
-			System.out
-					.println("Account has been created, account number is "
-							+ userName + "-"
-							+ user2CreateAccount.getNumberOfAccounts());
-			return true;
-		}
-	}
-
-	public boolean lockAccount(String accountID) {
-		if (accountID.contains("-")) {
-			System.out.println("Wrong account format");
-			return false;
-		}
-		String userID = accountID.split("-")[0];
-		User user = bankDatabase.getUser(userID);
-		if (user == null) {
 			System.out.println("User not exist");
 			return false;
 		}
-		Account account = user.getAccount(accountID.split("-")[1]);
-		if (account == null) {
-			System.out.println("Account not exist");
-			return false;
-		} else {
-			account.lockAccount();
-			System.out.println("Account " + accountID + " has been locked");
-			return true;
-		}
-	}
-
-	public boolean unlockAccount(String accountID) {
-		String userID = accountID.split("-")[0];
-		User user = bankDatabase.getUser(userID);
-		if (user == null) {
-			System.out.println("User not exist");
-			return false;
-		}
-		Account account = user.getAccount(accountID.split("-")[1]);
-		if (account == null) {
-			System.out.println("Account not exist");
-			return false;
-		} else {
-			account.unlockAccount();
-			System.out.println("Account " + accountID + " has been unlocked");
-			return true;
-		}
-	}
-
-	public boolean changePassword(String username2ChangePassword,
-			String password) {
-		User user = bankDatabase.getUser(username2ChangePassword);
-		if (user == null) {
-			System.out.println("User not exist");
-			return false;
-		} else {
-			user.changePassword(password);
-			return true;
-		}
-
 	}
 
 	public Double getBalance(String accountID) {
-		String userName = accountID.split("-")[0];
-		User user = bankDatabase.getUser(userName);
-		if (user == null) {
+		String username = accountID.split("-")[0];
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
 			System.out.println("User not exist");
 			return null;
 		}
-		Account account = user.getAccount((accountID.split("-")[1]));
+		Account account = u.getAccount((accountID.split("-")[1]));
 		if (account == null) {
 			System.out.println("Account not exist");
 			return null;
@@ -162,22 +99,72 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public Double getTotalBalance(String userName) {
-		User user = bankDatabase.getUser(userName);
-		if (user == null) {
+	public Double getTotalBalance(String username) {
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
 			System.out.println("User not exist");
 			return null;
 		} else
-			return user.getTotalBalance();
+			return u.getTotalBalance();
 	}
 
-	public String getPhoneNumber(String userName) {
-		User user = bankDatabase.getUser(userName);
-		if (user == null) {
+	public String getPhoneNumber(String username) {
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
 			System.out.println("User not exist");
 			return null;
 		} else
-			return user.getPhoneNumber();
+			return u.getPhoneNumber();
+	}
+
+	public boolean lockAccount(String accountID) {
+		if (accountID.contains("-")) {
+			System.out.println("Wrong account format");
+			return false;
+		}
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			System.out.println("User not exist");
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			System.out.println("Account not exist");
+			return false;
+		} else {
+			System.out.println("Account " + accountID + " has been locked");
+			return account.lockAccount();
+		}
+	}
+
+	public boolean unlockAccount(String accountID) {
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			System.out.println("User not exist");
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			System.out.println("Account not exist");
+			return false;
+		} else {
+			System.out.println("Account " + accountID + " has been unlocked");
+			return account.unlockAccount();
+		}
+	}
+
+	public boolean changePassword(String username, String newPassword) {
+		User u = bankDatabase.getUser(username);
+		if (u != null) {
+			return u.changePassword(newPassword);
+		} else {
+			return false;
+		}
+
+	}
+
+	public Database getDatabase() {
+		return bankDatabase;
 	}
 
 	public User getLoginUser() {

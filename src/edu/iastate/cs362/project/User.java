@@ -28,8 +28,8 @@ public class User implements Serializable {
 		return accounts.size();
 	}
 
-	public void addAccount() {
-		accounts.add(new Account(Integer.toString(accounts.size()) + 1));
+	public boolean addAccount() {
+		return accounts.add(new Account(Integer.toString(accounts.size()) + 1));
 	}
 
 	/**
@@ -51,8 +51,9 @@ public class User implements Serializable {
 		}
 	}
 	
-	public void changePassword(String newPassword){
+	public boolean changePassword(String newPassword){
 		this.password = newPassword;
+		return true;
 	}
 
 	public boolean comparePassword(String password) {

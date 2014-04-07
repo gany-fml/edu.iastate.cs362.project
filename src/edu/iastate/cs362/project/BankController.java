@@ -309,6 +309,10 @@ public class BankController implements Serializable {
 		return bank.logout();
 	}
 	
+	public User getLoginUser() {
+		return bank.getLoginUser();
+	}
+	
 	public boolean createUser(String name, String phone, String username,
 			String password, boolean hasPermission) {
 		return bank.createUser(name, phone, username, password, hasPermission);
@@ -360,10 +364,6 @@ public class BankController implements Serializable {
 		return false;
 	}
 
-	public User getLoginUser() {
-		return bank.getLoginUser();
-	}
-	
 	//public Statement viewStatement(String username){}
 	
 	

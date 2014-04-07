@@ -11,12 +11,12 @@ public class Database implements Serializable {
 		user = new HashMap<String, User>();
 	}
 
-	public boolean putUser(String userName, User usr) {
-			user.put(userName, usr);
-			return true;
+	public boolean putUser(String username, User usr) {
+		user.put(username, usr);
+		return true;
 	}
 
-	public User getUser(String userName) {
-		return user.get(userName);
+	public User getUser(String username) {
+		return user.get(username);
 	}
 }

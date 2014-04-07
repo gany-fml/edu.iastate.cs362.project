@@ -23,12 +23,14 @@ public class Account implements Serializable {
 		return balance;
 	}
 
-	public void lockAccount() {
+	public boolean lockAccount() {
 		lockStatus = true;
+		return true;
 	}
 
-	public void unlockAccount() {
+	public boolean unlockAccount() {
 		lockStatus = false;
+		return true;
 	}
 
 	public boolean checkLockStatus() {
