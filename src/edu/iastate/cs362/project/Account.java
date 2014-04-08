@@ -1,6 +1,9 @@
 package edu.iastate.cs362.project;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 
 public class Account implements Serializable {
 
@@ -8,6 +11,7 @@ public class Account implements Serializable {
 	private double balance;
 	private String accountID;
 	private boolean lockStatus;
+	private List<String> statementLog;
 
 	protected Account(String id) {
 		balance = 0;
@@ -50,5 +54,9 @@ public class Account implements Serializable {
 			return true;
 		} else
 			return false;
+	}
+
+	protected void addToLogWithTimestamp(String text) {
+		statementLog.add(text + " -- " + new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
 	}
 }

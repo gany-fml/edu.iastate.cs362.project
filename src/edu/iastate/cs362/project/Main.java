@@ -3,6 +3,8 @@ package edu.iastate.cs362.project;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.JOptionPane;
 
@@ -13,8 +15,10 @@ public class Main implements Serializable {
 
 	public static void main(String arg[]) throws IOException {
 		//MainFrame frame = new MainFrame();
-		File file = new File("Database.bankdata");
+		/*File file = new File("Database.bankdata");
 		controller = new BankController(file);
-		MainFrame.startApp();
+		MainFrame.startApp();*/
+		
+	System.out.print(new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
 	}
 }

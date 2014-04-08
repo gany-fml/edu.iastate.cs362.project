@@ -185,6 +185,7 @@ public class Bank implements Serializable {
 			return false;
 		} else {
 			if (account.deposit(depositAmount)) {
+				account.addToLogWithTimestamp("Deposit +$" + depositAmount);
 				return this.bankDatabase.putUser(accountID.split("-")[0], u);
 			} else {
 				return false;
@@ -203,6 +204,7 @@ public class Bank implements Serializable {
 			return false;
 		} else {
 			if (account.withdraw(withdrawAmount)) {
+				account.addToLogWithTimestamp("Withdraw -$" + withdrawAmount);
 				return this.bankDatabase.putUser(accountID.split("-")[0], u);
 			} else {
 				return false;
@@ -223,7 +225,9 @@ public class Bank implements Serializable {
 		} else {
 			if (accountF.getBalance() >= transferAmount && transferAmount > 0) {
 				accountF.withdraw(transferAmount);
+				accountF.addToLogWithTimestamp("Transfer -$" + transferAmount);
 				accountT.deposit(transferAmount);
+				accountT.addToLogWithTimestamp("Transfer +$" + transferAmount);
 				return this.bankDatabase.putUser(accountFrom.split("-")[0], u);
 			} else {
 				return false;
