@@ -18,25 +18,6 @@ public class BankController implements Serializable {
 		bank = new Bank(bankData);
 	}
 
-
-	public void updateDatabase() {
-		try {
-			FileOutputStream outStream = new FileOutputStream(bankData);
-			ObjectOutputStream outObject = new ObjectOutputStream(outStream);
-			outObject.writeObject(bank.getDatabase());
-			outObject.close();
-			outStream.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void logout() {
-		bank.logout();
-	}
-
 	public boolean userLogin(String username, String password) {
 		return bank.userLogin(username, password);
 	}
@@ -97,9 +78,23 @@ public class BankController implements Serializable {
 	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
 		return bank.transferMoney(accountFrom, accountTo, transferAmount);
 	}
+	
+	public void updateDatabase() {
+		try {
+			FileOutputStream outStream = new FileOutputStream(bankData);
+			ObjectOutputStream outObject = new ObjectOutputStream(outStream);
+			outObject.writeObject(bank.getDatabase());
+			outObject.close();
+			outStream.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-	public Statement viewStatement(String username){
-		return bank.viewStatement(username);
+	public void logout() {
+		bank.logout();
 	}
 
 }
