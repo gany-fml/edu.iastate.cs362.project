@@ -15,10 +15,8 @@ public class Main implements Serializable {
 
 	public static void main(String arg[]) throws IOException {
 		//MainFrame frame = new MainFrame();
-		/*File file = new File("Database.bankdata");
+		File file = new File("Database.bankdata");
 		controller = new BankController(file);
-		MainFrame.startApp();*/
-		
-	System.out.print(new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
+		MainFrame.startApp();	
 	}
 }
