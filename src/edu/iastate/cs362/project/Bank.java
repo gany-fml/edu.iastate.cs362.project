@@ -47,13 +47,11 @@ public class Bank implements Serializable {
 	}
 
 	protected boolean userLogin(String username, String password) {
-		User loginUser = bankDatabase.getUser(username);
-		if (loginUser == null) {
-			return false;
-		} else if (loginUser.comparePassword(password)) {
-			this.loginUser = loginUser;
+		User u = bankDatabase.getUser(username);
+		if (u != null && u.comparePassword(password)) {
+			this.loginUser = u;
 			hasLogin = true;
-			hasPermission = loginUser.getPermission();
+			hasPermission = u.getPermission();
 			return true;
 		} else {
 			return false;
