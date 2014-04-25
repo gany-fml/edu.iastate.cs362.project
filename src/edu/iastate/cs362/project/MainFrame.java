@@ -2,6 +2,7 @@ package edu.iastate.cs362.project;
 
 import java.io.File;
 
+import javax.sound.midi.ControllerEventListener;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -119,8 +120,17 @@ public class MainFrame extends javax.swing.JFrame {
         boolean status = Main.controller.userLogin(username.getText(), new String(password.getPassword()));
         if(status)
         {
-        	FrontPage.startApp();
-        	this.dispose();
+        	boolean admin = Main.controller.getLoginUser().getPermission();
+        	if(admin)
+        	{
+        		AdminFrontPage.startApp();
+        		this.dispose();
+        	}
+        	else
+        	{
+        		FrontPage.startApp();
+            	this.dispose();
+        	}    	
         }
     }//GEN-LAST:event_buttonLoginMouseClicked
 

@@ -1,13 +1,25 @@
 package edu.iastate.cs362.project;
 
-import javax.swing.JPanel;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import javax.swing.JOptionPane;
 
 public class FrontPage extends javax.swing.JFrame {
+	
+	User loggedUser;
+	List<Account> loggedAccounts = new ArrayList<Account>();
+	ArrayList<AccountTab> tabs = new ArrayList<AccountTab>();
 
     /**
      * Creates new form FrontPage
      */
     public FrontPage() {
+    	loggedUser = Main.controller.getLoginUser();
+    	loggedAccounts = loggedUser.getAccounts();
         initComponents();
     }
 
@@ -61,6 +73,7 @@ public class FrontPage extends javax.swing.JFrame {
         buttonAccount.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 buttonAccountMouseClicked(evt);
+                
             }
         });
 
@@ -182,20 +195,62 @@ public class FrontPage extends javax.swing.JFrame {
         
         name.setText(Main.controller.getLoginUser().getName());
         pNumber.setText(Main.controller.getLoginUser().getPhoneNumber());
-
+        
+        for(Account acc : loggedAccounts)
+        {
+        	AccountTab tab = new AccountTab(acc.getAccountID(), this); 
+        	tabbedPane.addTab(acc.getAccountID(), tab);
+        	if(acc.checkLockStatus())
+        	{
+        		tabbedPane.setEnabledAt(tabbedPane.getTabCount()-1, false);
+        		String tooltip = "Closed Account!";
+        		tabbedPane.setToolTipTextAt(tabbedPane.getTabCount()-1, tooltip);
+        	}
+        	tabs.add(tab);
+        }
+        
+        updateTotal();
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonAccountMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonAccountMouseClicked
-        tabbedPane.addTab("test", new AccountTab());
+    	Main.controller.createAccount(loggedUser.getUsername());   
+    	loggedAccounts = loggedUser.getAccounts();
+    	String accountID = loggedAccounts.get(loggedAccounts.size()-1).getAccountID();
+    	AccountTab tab = new AccountTab(accountID, this);
+    	tabs.add(tab);
+        tabbedPane.addTab(accountID, tab);
     }//GEN-LAST:event_buttonAccountMouseClicked
 
     private void buttonPNumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonPNumMouseClicked
-        // TODO add your handling code here:
+    	String num = (String)JOptionPane.showInputDialog(
+                "Update Phone Number (Only numbers):");
+    	if(num != null && num.length() == 10)
+    	{
+    		Main.controller.updatePhoneNumber(loggedUser.getUsername(), num);    	
+    		pNumber.setText(Main.controller.getPhoneNumber(loggedUser.getUsername()));
+    	}
     }//GEN-LAST:event_buttonPNumMouseClicked
 
     private void buttonTransferMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonTransferMouseClicked
-        // TODO add your handling code here:
+    	String acc1 = (String)JOptionPane.showInputDialog(
+                "Enter account to transfer FROM:");
+    	String acc2 = (String)JOptionPane.showInputDialog(
+                "Enter account to transfer TO:");
+    	String amount = (String)JOptionPane.showInputDialog(
+                "Enter amount:");
+    	if(acc1 != null && acc2 != null && amount != null)
+    	{
+    		Main.controller.transferMoney(loggedUser.getUsername() + "-" + acc1, 
+    				loggedUser.getUsername() + "-" + acc2, Double.valueOf(amount));
+    		
+    		///Update the text for each text for balances
+    		for(AccountTab tab : tabs)
+    		{
+    			tab.updateBalance();
+    		}
+    	}
     }//GEN-LAST:event_buttonTransferMouseClicked
 
     private void buttonLoanReqMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonLoanReqMouseClicked
@@ -203,7 +258,18 @@ public class FrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonLoanReqMouseClicked
 
     private void buttonPassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonPassMouseClicked
-        // TODO add your handling code here:
+    	String pass = (String)JOptionPane.showInputDialog(
+                "Change password: ");
+    	if(pass != null)
+    	{
+	    	if(!Main.controller.changePassword(loggedUser.getUsername(), pass))
+	    	{
+	    		JOptionPane.showMessageDialog(this,
+	    			    "Password change failed.",
+	    			    "Error!",
+	    			    JOptionPane.ERROR_MESSAGE);
+	    	}	    		
+    	}
     }//GEN-LAST:event_buttonPassMouseClicked
 
     /**
@@ -239,6 +305,11 @@ public class FrontPage extends javax.swing.JFrame {
                 new FrontPage().setVisible(true);
             }
         });
+    }
+    
+    public void updateTotal()
+    {   	
+    	totalBalance.setText("$" + new DecimalFormat("#0.00").format(loggedUser.getTotalBalance()));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonAccount;

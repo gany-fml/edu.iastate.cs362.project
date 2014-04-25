@@ -1,12 +1,23 @@
 package edu.iastate.cs362.project;
 
+import java.text.DecimalFormat;
+
+import javax.swing.JOptionPane;
+
 public class AccountTab extends javax.swing.JPanel {
 
+	User loggedUser;
+	Account loggedAccount;
+	String id;
+	FrontPage parent;
+	
     /**
      * Creates new form AccountTab
      */
-    public AccountTab() {
+    public AccountTab(String id, FrontPage parent) {
+    	this.id = id;
         initComponents();
+        this.parent = parent;
     }
 
     /**
@@ -78,7 +89,53 @@ public class AccountTab extends javax.swing.JPanel {
                 .addComponent(buttonClose, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32))
         );
+        
+        loggedUser = Main.controller.getLoginUser();
+    	loggedAccount = loggedUser.getAccount(id);
+    	
+    	updateBalance();
+        
+        buttonDeposit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            	String amount = (String)JOptionPane.showInputDialog(
+                        "Deposit amount:");
+            	if(amount != null)
+            	{
+            		Main.controller.depositMoney(loggedUser.getUsername() + "-" + id, Double.valueOf(amount));
+            		updateBalance();
+            		parent.updateTotal();
+            	}
+            }
+        });
+        buttonWithdraw.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            	String amount = (String)JOptionPane.showInputDialog(
+                        "Withdraw amount:");
+            	if(amount != null)
+            	{
+            		Main.controller.withdrawMoney(loggedUser.getUsername() + "-" + id, Double.valueOf(amount));
+            		updateBalance();
+            		parent.updateTotal();
+            	}
+            }
+        });
+        buttonClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            	///TO DO
+            }
+        });
+        buttonStatement.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+            	///TO DO
+            }
+        });
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void updateBalance()
+    {
+    	balance.setText("$" + new DecimalFormat("#0.00").format(loggedAccount.getBalance()));
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel balance;
     private javax.swing.JButton buttonClose;

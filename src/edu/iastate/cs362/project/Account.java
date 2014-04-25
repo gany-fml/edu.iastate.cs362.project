@@ -2,6 +2,7 @@ package edu.iastate.cs362.project;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class Account implements Serializable {
 		balance = 0;
 		accountID = id;
 		lockStatus = false;
+		statementLog = new ArrayList<String>();
 	}
 
 	protected String getAccountID() {
@@ -40,6 +42,8 @@ public class Account implements Serializable {
 	}
 
 	protected boolean deposit(double amount) {
+		///Round the values to get a correct precision
+		amount = (double)Math.round(amount * 100) / 100;
 		if (amount <= 0)
 			return false;
 		balance += amount;
@@ -47,6 +51,9 @@ public class Account implements Serializable {
 	}
 
 	protected boolean withdraw(double amount) {
+		///Round the values to get a correct comparison
+		amount = (double)Math.round(amount * 100) / 100;
+		balance = (double)Math.round(balance * 100) / 100;
 		if (amount <= 0)
 			return false;
 		if (balance >= amount) {

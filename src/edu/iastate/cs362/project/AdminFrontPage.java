@@ -2,6 +2,8 @@ package edu.iastate.cs362.project;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
+
 public class AdminFrontPage extends javax.swing.JFrame {
 	
 	private BankController controller;
@@ -117,11 +119,25 @@ public class AdminFrontPage extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonLoanApprovMouseClicked
 
     private void buttonUnlockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUnlockMouseClicked
-        // TODO add your handling code here:
+    	String user = (String)(String)JOptionPane.showInputDialog(
+                "Enter username:");
+    	String acc = (String)JOptionPane.showInputDialog(
+                "Enter account to unlock:");
+    	if(acc != null && user != null)
+    	{
+    		Main.controller.unlockAccount(user + "-" + acc);
+    	}
     }//GEN-LAST:event_buttonUnlockMouseClicked
 
     private void buttonLockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonLockMouseClicked
-        // TODO add your handling code here:
+    	String user = (String)(String)JOptionPane.showInputDialog(
+                "Enter username:");
+    	String acc = (String)JOptionPane.showInputDialog(
+                "Enter account to lock:");
+    	if(acc != null && user != null)
+    	{
+    		Main.controller.lockAccount(user + "-" + acc);
+    	}
     }//GEN-LAST:event_buttonLockMouseClicked
 
     /**

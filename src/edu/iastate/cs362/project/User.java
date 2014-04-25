@@ -23,12 +23,12 @@ public class User implements Serializable {
 		accounts = new ArrayList<Account>();
 	}
 
-	protected List<Account>  getAccounts() {
+	protected List<Account> getAccounts() {
 		return accounts;
 	}
 
 	protected boolean addAccount() {
-		return accounts.add(new Account(Integer.toString(accounts.size()) + 1));
+		return accounts.add(new Account(Integer.toString(accounts.size() + 1)));
 	}
 
 	/**

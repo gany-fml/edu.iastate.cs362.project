@@ -16,7 +16,7 @@ public class Bank implements Serializable {
 	private boolean hasLogin;
 	private User loginUser;
 
-	protected Bank(File file1) {
+	protected Bank(File file1) {		
 		File file = file1;
 		hasLogin = false;
 		loginUser = null;
@@ -25,14 +25,9 @@ public class Bank implements Serializable {
 			if (!file.isFile()) {
 				System.out.println("Bank data file not exist, creating new one...");
 				file.createNewFile();
-				FileOutputStream outStream = new FileOutputStream(file);
-				ObjectOutputStream outObject = new ObjectOutputStream(outStream);
-				Database init = new Database();
+				Database init = new Database(file);
 				User root = new User("root", "123", "root", "root", true);
 				init.putUser("root", root);
-				outObject.writeObject(init);
-				outObject.close();
-				outStream.close();
 			}
 			FileInputStream iFile = new FileInputStream(file);
 			ObjectInputStream oFile = new ObjectInputStream(iFile);
@@ -105,7 +100,7 @@ public class Bank implements Serializable {
 	}
 
 	protected boolean lockAccount(String accountID) {
-		if (accountID.contains("-")) {
+		if (!accountID.contains("-")) {
 			return false;
 		}
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
@@ -194,7 +189,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	protected boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
+	protected boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {		
 		User u = bankDatabase.getUser(accountFrom.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -204,7 +199,10 @@ public class Bank implements Serializable {
 		if (accountF == null || accountT == null) {
 			return false;
 		} else {
-			if (accountF.getBalance() >= transferAmount && transferAmount > 0) {
+			///Round the values to get a correct comparison
+			transferAmount = (double)Math.round(transferAmount * 100) / 100;
+			double accFBalance = (double)Math.round(accountF.getBalance() * 100) / 100;
+			if (accFBalance >= transferAmount && transferAmount > 0) {
 				accountF.withdraw(transferAmount);
 				accountF.addToLogWithTimestamp("Transfer -$" + transferAmount);
 				accountT.deposit(transferAmount);
