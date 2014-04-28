@@ -42,8 +42,8 @@ public class Account implements Serializable {
 	}
 
 	protected boolean deposit(double amount) {
-		///Round the values to get a correct precision
-		amount = (double)Math.round(amount * 100) / 100;
+		// Round the values to get a correct precision
+		amount = (double) Math.round(amount * 100) / 100;
 		if (amount <= 0)
 			return false;
 		balance += amount;
@@ -51,9 +51,9 @@ public class Account implements Serializable {
 	}
 
 	protected boolean withdraw(double amount) {
-		///Round the values to get a correct comparison
-		amount = (double)Math.round(amount * 100) / 100;
-		balance = (double)Math.round(balance * 100) / 100;
+		// Round the values to get a correct comparison
+		amount = (double) Math.round(amount * 100) / 100;
+		balance = (double) Math.round(balance * 100) / 100;
 		if (amount <= 0)
 			return false;
 		if (balance >= amount) {
@@ -64,6 +64,17 @@ public class Account implements Serializable {
 	}
 
 	protected void addToLogWithTimestamp(String text) {
-		statementLog.add(text + " -- " + new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
+		statementLog.add(text + "--"
+				+ new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
+	}
+
+	public List<String> searchLogs(String date) {
+		List<String> returnLog = new ArrayList<String>();
+		for (String log : statementLog) {
+			if (log.split("--")[1].equals(date)) {
+				returnLog.add(log);
+			}
+		}
+		return returnLog;
 	}
 }

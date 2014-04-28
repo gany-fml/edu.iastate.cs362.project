@@ -296,7 +296,15 @@ public class Bank implements Serializable {
 	}
 
 	public List<String> searchTransactionLog(String accountID, String date) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			return null;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			return null;
+		} else {
+			return account.searchLogs(date);
+		}
 	}
 }

@@ -10,15 +10,15 @@ public class Loan {
 		loanStatus = false;
 	}
 
-	public double getLoanAmount(){
+	protected double getLoanAmount(){
 		return loanAmount;
 	}
 	
-	public boolean getStatus() {
+	protected boolean getStatus() {
 		return loanStatus;
 	}
 	
-	public boolean approveLoan(){
+	protected boolean approveLoan(){
 		loanStatus = true;
 		return true;
 	}
