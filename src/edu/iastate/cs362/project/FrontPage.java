@@ -225,11 +225,13 @@ public class FrontPage extends javax.swing.JFrame {
 
     private void buttonPNumMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonPNumMouseClicked
     	String num = (String)JOptionPane.showInputDialog(
-                "Update Phone Number (Only numbers):");
+                "Update Phone Number (Must be 10 digits):");
     	if(num != null && num.length() == 10)
     	{
     		Main.controller.updatePhoneNumber(loggedUser.getUsername(), num);    	
     		pNumber.setText(Main.controller.getPhoneNumber(loggedUser.getUsername()));
+    	} else {
+    		JOptionPane.showMessageDialog(null, "Phonenumber length must be 10 digits");
     	}
     }//GEN-LAST:event_buttonPNumMouseClicked
 
