@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
 
 public class BankController implements Serializable {
 
@@ -77,6 +78,30 @@ public class BankController implements Serializable {
 
 	public boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
 		return bank.transferMoney(accountFrom, accountTo, transferAmount);
+	}
+	
+	public boolean approveLoan(String username){
+		return bank.approveLoan(username);
+	}
+	
+	public boolean requestLoan(double loanAmount){
+		return bank.requestLoan(loanAmount);
+	}
+	
+	public boolean checkLoanStatus(String username){
+		return bank.checkLoanStatus(username);
+	}
+	
+	public boolean closeAccount(String accountID, String accountTransferID){
+		return bank.closeAccount(accountID, accountTransferID);
+	}
+	
+	public boolean fixedDeposit(String accountID, double amount, int months){
+		return bank.fixedDeposit(accountID, amount, months);
+	}
+	
+	public List<String> searchTransactionLog(String accountID, String date){
+		return bank.searchTransactionLog(accountID, date);
 	}
 	
 	public void updateDatabase() {

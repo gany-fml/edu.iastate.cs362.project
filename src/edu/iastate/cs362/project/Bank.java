@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
 
 public class Bank implements Serializable {
 
@@ -236,5 +237,35 @@ public class Bank implements Serializable {
 		loginUser = null;
 		hasPermission = false;
 		return true;
+	}
+
+	public boolean approveLoan(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean requestLoan(double loanAmount) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean checkLoanStatus(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean closeAccount(String accountID, String accountTransferID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean fixedDeposit(String accountID, double amount, int months) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public List<String> searchTransactionLog(String accountID, String date) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
