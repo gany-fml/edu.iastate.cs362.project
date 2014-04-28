@@ -237,7 +237,7 @@ public class Bank implements Serializable {
 		return true;
 	}
 
-	public boolean approveLoan(String username) {
+	protected boolean approveLoan(String username) {
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			return false;
@@ -251,7 +251,7 @@ public class Bank implements Serializable {
 
 	}
 
-	public boolean requestLoan(String username, double loanAmount) {
+	protected boolean requestLoan(String username, double loanAmount) {
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			return false;
@@ -263,7 +263,7 @@ public class Bank implements Serializable {
 			return false;
 	}
 
-	public boolean checkLoanStatus(String username) {
+	protected boolean checkLoanStatus(String username) {
 		User u = bankDatabase.getUser(username);
 		if (u == null) {
 			return false;
@@ -271,7 +271,7 @@ public class Bank implements Serializable {
 		return u.getLoan().getStatus();
 	}
 
-	public boolean closeAccount(String accountID, String accountTransferID) {
+	protected boolean closeAccount(String accountID, String accountTransferID) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -290,12 +290,24 @@ public class Bank implements Serializable {
 		}
 	}
 
-	public boolean fixedDeposit(String accountID, double amount, int months) {
-		// TODO Auto-generated method stub
-		return false;
+	protected boolean fixedDeposit(String accountID, double amount, int months) {
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		if (account == null) {
+			return false;
+		} else {
+			if (account.withdraw(amount)) {
+				CertificateOfDeposit cd = new CertificateOfDeposit(amount, months);
+				return true;
+			} else
+				return false;
+		}
 	}
 
-	public List<String> searchTransactionLog(String accountID, String date) {
+	protected List<String> searchTransactionLog(String accountID, String date) {
 		User u = bankDatabase.getUser(accountID.split("-")[0]);
 		if (u == null) {
 			return null;

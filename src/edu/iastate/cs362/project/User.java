@@ -86,17 +86,17 @@ public class User implements Serializable {
 		this.phone = newPhoneNumber;
 	}
 
-	public void deleteAccount(String accountID) {
+	protected void deleteAccount(String accountID) {
 		int accountNumber = Integer.parseInt(accountID);
 		accounts.remove(accountNumber - 1);
 	}
 
-	public boolean putLoan(Loan newLoan) {
+	protected boolean putLoan(Loan newLoan) {
 		loan = newLoan;
 		return true;
 	}
 
-	public Loan getLoan() {
+	protected Loan getLoan() {
 		return loan;
 	}
 }

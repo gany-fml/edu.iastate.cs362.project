@@ -68,7 +68,7 @@ public class Account implements Serializable {
 				+ new SimpleDateFormat("MM-dd-yyyy").format(Calendar.getInstance().getTime()));
 	}
 
-	public List<String> searchLogs(String date) {
+	protected List<String> searchLogs(String date) {
 		List<String> returnLog = new ArrayList<String>();
 		for (String log : statementLog) {
 			if (log.split("--")[1].equals(date)) {
