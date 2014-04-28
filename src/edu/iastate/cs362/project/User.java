@@ -14,8 +14,10 @@ public class User implements Serializable {
 	private String username;
 	private String name;
 	private Loan loan;
+	private CertificateOfDeposit cd;
 
-	protected User(String name, String phone, String username, String password, boolean hasPermission) {
+	protected User(String name, String phone, String username, String password,
+			boolean hasPermission) {
 		this.name = name;
 		this.phone = phone;
 		this.username = username;
@@ -98,5 +100,9 @@ public class User implements Serializable {
 
 	protected Loan getLoan() {
 		return loan;
+	}
+
+	public CertificateOfDeposit fixedDeposit(double amount, int months) {
+		return cd = new CertificateOfDeposit(amount, months);
 	}
 }

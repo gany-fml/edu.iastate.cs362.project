@@ -300,10 +300,11 @@ public class Bank implements Serializable {
 			return false;
 		} else {
 			if (account.withdraw(amount)) {
-				CertificateOfDeposit cd = new CertificateOfDeposit(amount, months);
-				return true;
+				u.fixedDeposit(amount, months);
+				return this.bankDatabase.putUser(accountID.split("-")[0], u);
 			} else
 				return false;
+			
 		}
 	}
 
