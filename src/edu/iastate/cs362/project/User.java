@@ -13,6 +13,7 @@ public class User implements Serializable {
 	private String password;
 	private String username;
 	private String name;
+	private Loan loan;
 
 	protected User(String name, String phone, String username, String password, boolean hasPermission) {
 		this.name = name;
@@ -83,5 +84,19 @@ public class User implements Serializable {
 
 	protected void updatePhoneNumber(String newPhoneNumber) {
 		this.phone = newPhoneNumber;
+	}
+
+	public void deleteAccount(String accountID) {
+		int accountNumber = Integer.parseInt(accountID);
+		accounts.remove(accountNumber - 1);
+	}
+
+	public boolean putLoan(Loan newLoan) {
+		loan = newLoan;
+		return true;
+	}
+
+	public Loan getLoan() {
+		return loan;
 	}
 }

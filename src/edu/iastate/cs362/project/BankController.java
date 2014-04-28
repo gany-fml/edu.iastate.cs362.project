@@ -84,8 +84,8 @@ public class BankController implements Serializable {
 		return bank.approveLoan(username);
 	}
 	
-	public boolean requestLoan(double loanAmount){
-		return bank.requestLoan(loanAmount);
+	public boolean requestLoan(String username, double loanAmount){
+		return bank.requestLoan(username, loanAmount);
 	}
 	
 	public boolean checkLoanStatus(String username){

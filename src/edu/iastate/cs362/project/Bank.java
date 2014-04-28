@@ -2,10 +2,8 @@ package edu.iastate.cs362.project;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,7 +15,7 @@ public class Bank implements Serializable {
 	private boolean hasLogin;
 	private User loginUser;
 
-	protected Bank(File file1) {		
+	protected Bank(File file1) {
 		File file = file1;
 		hasLogin = false;
 		loginUser = null;
@@ -190,7 +188,7 @@ public class Bank implements Serializable {
 		}
 	}
 
-	protected boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {		
+	protected boolean transferMoney(String accountFrom, String accountTo, double transferAmount) {
 		User u = bankDatabase.getUser(accountFrom.split("-")[0]);
 		if (u == null) {
 			return false;
@@ -200,9 +198,9 @@ public class Bank implements Serializable {
 		if (accountF == null || accountT == null) {
 			return false;
 		} else {
-			///Round the values to get a correct comparison
-			transferAmount = (double)Math.round(transferAmount * 100) / 100;
-			double accFBalance = (double)Math.round(accountF.getBalance() * 100) / 100;
+			// /Round the values to get a correct comparison
+			transferAmount = (double) Math.round(transferAmount * 100) / 100;
+			double accFBalance = (double) Math.round(accountF.getBalance() * 100) / 100;
 			if (accFBalance >= transferAmount && transferAmount > 0) {
 				accountF.withdraw(transferAmount);
 				accountF.addToLogWithTimestamp("Transfer -$" + transferAmount);
@@ -240,23 +238,56 @@ public class Bank implements Serializable {
 	}
 
 	public boolean approveLoan(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
+			return false;
+		}
+		Loan loan = u.getLoan();
+		loan.approveLoan();
+		if (u.putLoan(loan))
+			return this.bankDatabase.putUser(username, u);
+		else
+			return false;
+
 	}
 
-	public boolean requestLoan(double loanAmount) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean requestLoan(String username, double loanAmount) {
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
+			return false;
+		}
+		Loan newLoan = new Loan(loanAmount);
+		if (u.putLoan(newLoan))
+			return this.bankDatabase.putUser(username, u);
+		else
+			return false;
 	}
 
 	public boolean checkLoanStatus(String username) {
-		// TODO Auto-generated method stub
-		return false;
+		User u = bankDatabase.getUser(username);
+		if (u == null) {
+			return false;
+		}
+		return u.getLoan().getStatus();
 	}
 
 	public boolean closeAccount(String accountID, String accountTransferID) {
-		// TODO Auto-generated method stub
-		return false;
+		User u = bankDatabase.getUser(accountID.split("-")[0]);
+		if (u == null) {
+			return false;
+		}
+		Account account = u.getAccount(accountID.split("-")[1]);
+		Account accountTransfer = u.getAccount(accountTransferID.split("-")[1]);
+		if (account == null || accountTransfer == null) {
+			return false;
+		} else {
+			if (this.transferMoney(accountID, accountTransferID, account.getBalance())) {
+				u.deleteAccount(accountID);
+				return this.bankDatabase.putUser(accountID.split("-")[0], u);
+			} else {
+				return false;
+			}
+		}
 	}
 
 	public boolean fixedDeposit(String accountID, double amount, int months) {
