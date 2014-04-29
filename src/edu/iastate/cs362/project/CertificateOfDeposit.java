@@ -1,7 +1,10 @@
 package edu.iastate.cs362.project;
 
-public class CertificateOfDeposit {
+import java.io.Serializable;
 
+public class CertificateOfDeposit implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private double amount;
 	private int months;
 

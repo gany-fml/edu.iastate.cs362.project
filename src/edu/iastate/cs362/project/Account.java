@@ -71,9 +71,9 @@ public class Account implements Serializable {
 	protected List<String> searchLogs(String date) {
 		List<String> returnLog = new ArrayList<String>();
 		for (String log : statementLog) {
-			if (log.split("--")[1].equals(date)) {
+			//if (log.split("--")[1].equals(date)) {
 				returnLog.add(log);
-			}
+			//}
 		}
 		return returnLog;
 	}

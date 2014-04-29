@@ -1,8 +1,11 @@
 package edu.iastate.cs362.project;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class AccountTab extends javax.swing.JPanel {
 
@@ -121,19 +124,51 @@ public class AccountTab extends javax.swing.JPanel {
         });
         buttonClose.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-            	///TO DO
+            	String accountid = loggedUser.getUsername() + "-" + id;
+            	String toID;
+            	if(loggedUser.getAccounts().size()-1 > 0)
+            	{
+            		if(loggedUser.getAccounts().get(0).getAccountID() != accountid)
+            		{
+            			Main.controller.closeAccount(accountid, 
+            					loggedUser.getUsername() + "-" + loggedUser.getAccounts().get(0).getAccountID());
+            			toID = loggedUser.getAccounts().get(0).getAccountID();
+            		}
+            		else
+            		{
+            			Main.controller.closeAccount(accountid, 
+            					loggedUser.getUsername() + "-" + loggedUser.getAccounts().get(1).getAccountID());
+            			toID = loggedUser.getAccounts().get(1).getAccountID();
+            			
+            		}
+            		parent.deletePage(id, toID);       		
+            	}
             }
         });
         buttonStatement.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-            	///TO DO
+            	JTextArea textArea = new JTextArea();
+            	List<String> logs = 
+            			Main.controller.searchTransactionLog(loggedUser.getUsername() + "-" + id, "nothing");
+            	for(String log : logs)
+            	{
+            		textArea.setText(textArea.getText() + "\n" + log);
+            	}
+            	JScrollPane scrollPane = new JScrollPane(textArea);
+            	Object options[] = {scrollPane};
+            	
+            	int stopOption = JOptionPane.showOptionDialog(null,
+            	"Statements",
+            	"Statments", JOptionPane.DEFAULT_OPTION,
+            	JOptionPane.QUESTION_MESSAGE, null,
+            	options, options[0]);
             }
         });
     }// </editor-fold>//GEN-END:initComponents
     
     public void updateBalance()
     {
-    	balance.setText("$" + new DecimalFormat("#0.00").format(loggedAccount.getBalance()));
+    	balance.setText("$" + new DecimalFormat("#.##").format(loggedAccount.getBalance()));
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

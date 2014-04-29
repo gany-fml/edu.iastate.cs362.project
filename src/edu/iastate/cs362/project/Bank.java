@@ -244,7 +244,15 @@ public class Bank implements Serializable {
 		}
 		Loan loan = u.getLoan();
 		loan.approveLoan();
-		if (u.putLoan(loan))
+		if(loan.getStatus())
+		{
+			System.out.println("Loan amount of: " + loan.getLoanAmount() + " for: " + username + " is already approved!");
+		}
+		else
+		{
+			System.out.println("Loan amount of: " + loan.getLoanAmount() + " for: " + username + " has been approved!");
+		}	
+		if (loan.getStatus())
 			return this.bankDatabase.putUser(username, u);
 		else
 			return false;
@@ -282,7 +290,7 @@ public class Bank implements Serializable {
 			return false;
 		} else {
 			if (this.transferMoney(accountID, accountTransferID, account.getBalance())) {
-				u.deleteAccount(accountID);
+				u.deleteAccount(accountID.split("-")[1]);
 				return this.bankDatabase.putUser(accountID.split("-")[0], u);
 			} else {
 				return false;
@@ -301,6 +309,7 @@ public class Bank implements Serializable {
 		} else {
 			if (account.withdraw(amount)) {
 				u.fixedDeposit(amount, months);
+				System.out.println("A fixed deposit is successful amount: " + amount + " for: " + months + " months");
 				return this.bankDatabase.putUser(accountID.split("-")[0], u);
 			} else
 				return false;

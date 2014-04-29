@@ -95,6 +95,7 @@ public class User implements Serializable {
 
 	protected boolean putLoan(Loan newLoan) {
 		loan = newLoan;
+		System.out.println("Loan amount of: " + loan.getLoanAmount() + " for: " + username + " has been requested!");
 		return true;
 	}
 

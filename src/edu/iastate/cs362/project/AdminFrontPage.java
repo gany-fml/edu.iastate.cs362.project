@@ -115,7 +115,12 @@ public class AdminFrontPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonLoanApprovMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonLoanApprovMouseClicked
-        // TODO add your handling code here:
+    	String username = (String)JOptionPane.showInputDialog(
+                "UserName:");
+    	if(username != null)
+    	{
+    		Main.controller.approveLoan(username);
+    	}
     }//GEN-LAST:event_buttonLoanApprovMouseClicked
 
     private void buttonUnlockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonUnlockMouseClicked
